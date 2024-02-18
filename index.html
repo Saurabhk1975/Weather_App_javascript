@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="container" style="text-align: center;">
+    <h1>Weather App</h1>
+    <div class="search">
+      <input type="text" placeholder="Enter Place Name">
+      <button type="button">Submit</button>
+    </div>
+    <div id="wdata">
+      <!-- Weather data displayed from javascript -->
+    </div>
+  </div>
+
+<script>
+  const key = "3316f9091f530cfc13bd5066d7726323";
+
+  async function fetchData(value) {
+    try {
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${value}&appid=${key}`;
+      const promise = await fetch(apiUrl);
+      const data = await promise.json();
+      displayWeather(data);
+    } catch (error) {
+      console.error('Fetch Error:', error.message);
+      displayErrorMessage('Something went wrong. Please try again.');
+    }
+  }
+
+  const displayWeather = (data) => {
+    const cityName = data.name;
+    const temperature = Math.round(data.main.temp);
+    const description = data.weather[0].description;
+    const humidity = data.main.humidity;
+
+    // Construct HTML to display weather information
+    const html = `
+        <h2>Weather in ${cityName}</h2>
+        <p>Temperature: ${temperature} °C</p>
+        <p>Description: ${description}</p>
+        <p>Humidity: ${humidity}%</p>
+    `;
+
+    // Display weather information in the wdata element
+    displayMessage(html);
+  }
+
+  const displayErrorMessage = (message) => {
+    const html = `<p>${message}</p>`;
+    displayMessage(html);
+  }
+
+  const displayMessage = (html) => {
+    const wdata = document.getElementById('wdata');
+    wdata.innerHTML = html;
+    document.getElementById("wdata").style.display = "block"; // Show container
+  }
+
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const searchInput = document.querySelector(".search input");
+    const searchBtn = document.querySelector(".search button");
+
+    searchBtn.addEventListener("click", () => {
+      fetchData(searchInput.value);
+    });
+  });
+</script>
+</body>
+</html>

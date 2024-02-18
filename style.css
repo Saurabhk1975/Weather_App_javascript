@@ -1,0 +1,17 @@
+.search{
+    text-align: center;
+    background-color: aqua;
+    height: auto;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+#wdata{
+background-color: blue;
+border: 2px solid red;
+}
+#wdata{
+    display: none;
+}
